@@ -1,0 +1,2 @@
+class StudentRegisteredInProgramException(Exception):
+    pass
