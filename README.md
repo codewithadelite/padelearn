@@ -3,6 +3,8 @@
 **Padelearn** est une alternative à Moodle, axée sur des évaluations alimentées par l'intelligence artificielle pour aider les étudiants à mieux comprendre les cours.  
 L'application lit le contenu des diapositives PDF et génère automatiquement des quiz basés sur ce contenu, permettant ainsi aux étudiants de tester leurs connaissances et de s'améliorer.
 
+![Capture d'écran de Padelearn](https://i.ibb.co/xFMH8PL/padelearn-image.png)
+
 ## Fonctionnalités
 
 ### Pour l'administration :
