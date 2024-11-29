@@ -10,10 +10,10 @@ class ProgramSerializer(serializers.ModelSerializer):
 
     def to_internal_value(self, data):
         # Convert incoming date strings to `yyyy-MM-dd` format if necessary
-        if 'start_date' in data and data['start_date']:
-            data['start_date'] = self.parse_date(data['start_date'])
-        if 'end_date' in data and data['end_date']:
-            data['end_date'] = self.parse_date(data['end_date'])
+        if "start_date" in data and data["start_date"]:
+            data["start_date"] = self.parse_date(data["start_date"])
+        if "end_date" in data and data["end_date"]:
+            data["end_date"] = self.parse_date(data["end_date"])
 
         return super().to_internal_value(data)
 

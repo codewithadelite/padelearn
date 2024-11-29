@@ -1,10 +1,5 @@
 import APIService from "@/services/api.service";
-import {
-  ICourse,
-  ICourseCreate,
-  ICourseMaterial,
-  ICourseMaterialCreate,
-} from "@/models/courses";
+import { ICourse, ICourseCreate, ICourseMaterial } from "@/models/courses";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -63,11 +58,16 @@ class CourseService extends APIService {
       });
   }
 
-  async addCourseMaterial(
-    id: number,
-    data: ICourseMaterialCreate
-  ): Promise<any> {
-    return this.mediaUpload(`${id}/materials`, data)
+  async deleteCourseMaterial(id: number, materialId: number): Promise<any> {
+    return this.delete(`${id}/materials/${materialId}/`)
+      .then((response) => response?.data)
+      .catch((error) => {
+        throw error?.response?.data;
+      });
+  }
+
+  async addCourseMaterial(id: number, data: FormData): Promise<any> {
+    return this.mediaUpload(`${id}/materials/`, data)
       .then((response) => response?.data)
       .catch((error) => {
         throw error?.response?.data;

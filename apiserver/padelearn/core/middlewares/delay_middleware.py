@@ -8,7 +8,7 @@ class DelayMiddleware:
     def __call__(self, request):
         # Delay before processing the request
         delay_seconds = 2  # Adjust the delay time in seconds
-        #time.sleep(delay_seconds)
+        # time.sleep(delay_seconds)
 
         response = self.get_response(request)
 

@@ -1,5 +1,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
+import { IUser } from "@/models/authentication";
 
 const unAuthorizedStatus = [401];
 axios.interceptors.response.use(
@@ -30,6 +31,14 @@ abstract class APIService {
 
   setAccessToken(token: string) {
     Cookies.set("accessToken", token);
+  }
+
+  getUserInfo() {
+    return Cookies.get("userInfo");
+  }
+
+  setUserInfo(user: IUser) {
+    Cookies.set("userInfo", JSON.stringify(user));
   }
 
   removeAccessToken() {

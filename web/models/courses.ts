@@ -22,7 +22,6 @@ export interface ICourseMaterial {
 
 export interface ICourseMaterialCreate {
   name: string;
-  document: string;
+  document: File;
   generate_quiz: boolean;
-  course: ICourse;
 }

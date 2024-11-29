@@ -1,3 +1,4 @@
+import os
 from django.db import models
 
 from padelearn.core.models import BaseModel
@@ -32,3 +33,10 @@ class Material(BaseModel):
 
     def __str__(self) -> str:
         return str(self.name)
+    
+    def delete(self, *args, **kwargs):
+        if self.document:
+            if os.path.isfile(self.document.path):
+                os.remove(self.document.path)
+        
+        super().delete(*args, **kwargs)

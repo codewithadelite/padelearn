@@ -5,10 +5,9 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { Button } from "@/components/ui/button";
 
 import MaterialsList from "@/components/shared/courses/materials/materials-list";
-import AddProgramModal from "@/components/shared/programs/add-program-modal";
+import AddMaterialModal from "@/components/shared/courses/materials/add-material-modal";
 
 export default function Materials() {
   return (
@@ -22,10 +21,13 @@ export default function Materials() {
               <Separator orientation="vertical" className="mr-2 h-4" />
               <h3 className="text-md font-bold">Materials</h3>
             </div>
-            <AddProgramModal />
+            <AddMaterialModal />
           </div>
         </header>
         <div className="w-full px-4 sm:px-6 md:px-4 lg:px-20 ">
+          <h1 className="text-2xl text-dark-foreground font-bold mb-4">
+            Documents
+          </h1>
           <MaterialsList />
         </div>
       </SidebarInset>

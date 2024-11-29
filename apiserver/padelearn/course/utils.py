@@ -26,7 +26,6 @@ def get_course_materials(course: Course) -> List[Material]:
     return Material.objects.select_related("course").filter(course=course)
 
 
-
 def save_questions_to_db(
     course: Course, material: Material, questions: List[QuestionSchema]
 ):

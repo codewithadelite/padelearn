@@ -15,6 +15,7 @@ class AuthenticationService extends APIService {
       .then((response) => {
         this.setAccessToken(response?.data?.access);
         this.setRefreshToken(response?.data?.refresh);
+        this.setUserInfo(response?.data?.user);
         return response?.data;
       })
       .catch((error) => {

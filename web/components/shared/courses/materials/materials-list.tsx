@@ -17,6 +17,8 @@ import MaterialsSkeleton from "@/components/shared/courses/materials/materials-s
 import fileDownload from "js-file-download";
 
 import { Download } from "lucide-react";
+
+import DeleteMaterial from "./delete-material";
 const MaterialsList = () => {
   const { id: courseId } = useParams();
   const {
@@ -27,10 +29,10 @@ const MaterialsList = () => {
     coursesService.getCourseMaterials(courseId as string)
   );
 
-  const downloadDocument = async (id: number) => {
+  const downloadDocument = async (id: number, name: string) => {
     try {
       const res = await coursesService.downloadDocument(id);
-      let filename = "download.pdf";
+      let filename = `${name}.pdf`;
       fileDownload(res, filename);
     } catch (error) {
       console.log(error);
@@ -55,7 +57,7 @@ const MaterialsList = () => {
         <Link href="#" key={indx}>
           <div className="bg-gray-100 rounded-md w-full h-[200px] flex justify-center items-center mb-2">
             <Image
-              src={`/images/file-icon.png`}
+              src={`/images/pdf-icon.png`}
               alt={material.name}
               width={50}
               height={50}
@@ -63,14 +65,15 @@ const MaterialsList = () => {
           </div>
           <div className="flex justify-between items-center px-1">
             <h4 className="font-normal mt-4 text-gray-600">{material.name}</h4>
-            <div>
+            <div className="flex gap-2">
               <Button
                 variant="outline"
                 className="text-xs"
-                onClick={() => downloadDocument(material.id)}
+                onClick={() => downloadDocument(material.id, material.name)}
               >
                 <Download className="h-4 w-4" />
               </Button>
+              <DeleteMaterial documentId={material.id} />
             </div>
           </div>
         </Link>

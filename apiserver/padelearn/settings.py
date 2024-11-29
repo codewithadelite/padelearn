@@ -36,7 +36,6 @@ ALLOWED_HOSTS = [
     "quintessential-reena-padelearn-a9d7581a.koyeb.app",
     "www.quintessential-reena-padelearn-a9d7581a.koyeb.app",
     "127.0.0.1",
-
 ]
 
 
@@ -84,7 +83,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    'padelearn.core.middlewares.delay_middleware.DelayMiddleware',
+    "padelearn.core.middlewares.delay_middleware.DelayMiddleware",
 ]
 
 ROOT_URLCONF = "padelearn.urls"
@@ -179,10 +178,7 @@ INTERNAL_IPS = [
     "127.0.0.1",
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://localhost:4200"
-]
+CORS_ALLOWED_ORIGINS = ["http://localhost:3000", "http://localhost:4200"]
 
 
 SIMPLE_JWT = {

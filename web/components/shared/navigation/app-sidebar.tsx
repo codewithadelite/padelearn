@@ -22,6 +22,9 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 
+import { ROLES } from "@/constants/authentication";
+import withAuth from "@/hoc/with-auth";
+
 // This is sample data.
 const data = {
   user: {
@@ -67,7 +70,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
+        {withAuth(NavProjects, ROLES.STUDENT)({ projects: data.projects })}
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />

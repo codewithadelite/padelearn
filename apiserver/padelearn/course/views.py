@@ -5,11 +5,13 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.parsers import FormParser, MultiPartParser
+from rest_framework.permissions import IsAuthenticated
 
 from padelearn.core.permissions import (
     IsAdminOrReadOnly,
     IsResponsibleTrainer,
     IsStudentRegisteredInCourse,
+    IsAdmin
 )
 from padelearn.program.utils import get_program_by_id
 
@@ -17,7 +19,12 @@ from drf_yasg.utils import swagger_auto_schema
 
 from .models import Course
 from .serializers import CourseSerializer, MaterialSerializer
-from .utils import get_course_by_id, get_course_materials, get_course_by_program_id, get_material_by_id
+from .utils import (
+    get_course_by_id,
+    get_course_materials,
+    get_course_by_program_id,
+    get_material_by_id,
+)
 from .tasks import generate_quiz_from_document
 
 
@@ -29,7 +36,7 @@ class CourseAPIView(viewsets.ModelViewSet):
 
     def get_queryset(self):
         queryset = Course.objects.all()
-        program_id = self.request.query_params.get('program_id', None)
+        program_id = self.request.query_params.get("program_id", None)
         if program_id is not None:
             queryset = queryset.filter(program=get_program_by_id(program_id))
         return queryset
@@ -37,7 +44,7 @@ class CourseAPIView(viewsets.ModelViewSet):
 
 class CourseMaterialsAPIView(APIView):
     parser_classes = [FormParser, MultiPartParser]
-    permission_classes = [IsResponsibleTrainer | IsStudentRegisteredInCourse]
+    permission_classes = [IsResponsibleTrainer | IsStudentRegisteredInCourse | IsAdmin]
     serializer_class = MaterialSerializer
 
     @swagger_auto_schema(responses={200: serializer_class(many=True)})
@@ -95,9 +102,33 @@ class CourseMaterialsAPIView(APIView):
             )
 
 
+class CourseMaterialDetailsAPIView(APIView):
+    parser_classes = [FormParser, MultiPartParser]
+    permission_classes = [IsResponsibleTrainer]
+    serializer_class = MaterialSerializer
+
+    @swagger_auto_schema(responses={200: serializer_class(many=True)})
+    def delete(self, request, id: int, material_id: int, format=None, *args, **kwargs):
+        try:
+            material = get_material_by_id(material_id)
+            material.delete()
+            return Response({"detail": "Deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+        except Http404:
+            return Response(
+                {"detail": "No material found for provided id."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        except Exception as e:
+            return Response(
+                {"detail": "There was error, try again."},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
+
+
 class CourseMaterialDocumentAPIView(APIView):
     parser_classes = [FormParser, MultiPartParser]
-    permission_classes = []
+    permission_classes = [IsAuthenticated]
+    # TODO: Allow document download for only students registered in course and trainers responsible for courses
     serializer_class = MaterialSerializer
 
     @swagger_auto_schema(responses={200: serializer_class(many=True)})
@@ -107,10 +138,12 @@ class CourseMaterialDocumentAPIView(APIView):
 
             # Serve the file
             response = FileResponse(
-                material.document.open('rb'),  # Open file in binary mode
-                content_type='application/pdf'
+                material.document.open("rb"),  # Open file in binary mode
+                content_type="application/pdf",
             )
-            response['Content-Disposition'] = f'attachment; filename="{material.document.name}"'
+            response["Content-Disposition"] = (
+                f'attachment; filename="{material.document.name}"'
+            )
             return response
         except Http404:
             return Response(
