@@ -21,18 +21,14 @@ def generate_quiz_from_document(
     """
     chunk_text = _get_texts_from_document(path)
 
-    # Log pdf content for debugging
-
-    for text in chunk_text:
-        print(text)
-
     pipeline = QuestionPipeline(chunk_text)
     questions_data = pipeline.process()
 
-    # Log questions
+    print("In task")
     print(questions_data)
 
     if save:
+        print("calling save")
         # Save questions into database
         course = get_course_by_id(course_id)
         material = get_material_by_id(material_id)

@@ -3,9 +3,9 @@
 import React, { useCallback, useState } from "react";
 import { useParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { FilePlus, BrainCog, Check } from "lucide-react";
+import { FilePlus, BrainCog, Check, CloudUpload } from "lucide-react";
 
-import useSWR, { mutate } from "swr";
+import { mutate } from "swr";
 
 import {
   Dialog,
@@ -87,6 +87,7 @@ function AddMaterialModal() {
         description: "Document added successfully.",
       });
       setIsLoading(false);
+      setFile(null);
       setOpen(false);
     } catch (error: any) {
       toast({
@@ -130,12 +131,22 @@ function AddMaterialModal() {
           <div>
             <input {...getInputProps()} />
             {isDragActive ? (
-              <p>Drop the files here ...</p>
+              <div className="flex flex-col items-center">
+                <div className="bg-gray-200 flex justify-center items-center w-10 h-10 rounded-full">
+                  <CloudUpload className="w-5 h-5 text-gray-800" />
+                </div>
+                <span className="font-bold text-sm text-gray-800 mt-2">
+                  Drop the files here ...
+                </span>
+              </div>
             ) : (
               <div className="flex flex-col items-center">
                 {file ? (
-                  <div className="bg-gray-200 flex justify-center items-center w-10 h-10 rounded-md">
-                    <Check className="w-5 h-5 text-gray-800" />
+                  <div className="flex flex-col items-center ">
+                    <div className="bg-emerald-500 flex justify-center items-center w-10 h-10 rounded-full">
+                      <Check className="w-5 h-5 text-white" />
+                    </div>
+                    <span className="text-sm text-dark">{file.name}</span>
                   </div>
                 ) : (
                   <>
@@ -166,7 +177,10 @@ function AddMaterialModal() {
             <div className="space-y-0.5">
               <label className="text-base font-semibold">Generate Quiz</label>
               <p className="text-sm text-muted-foreground">
-                Generate multiple-choice quiz for this document with AI.
+                Generate multiple-choice quiz for this document with AI. <br />
+                <span className="text-sm text-orange-500">
+                  (This feature is currently in free)
+                </span>
               </p>
             </div>
           </div>

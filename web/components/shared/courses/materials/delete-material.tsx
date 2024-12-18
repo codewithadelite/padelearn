@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams } from "next/navigation";
 import withAuth from "@/hoc/with-auth";
 import { ROLES } from "@/constants/authentication";
@@ -28,6 +28,7 @@ interface IProps {
 }
 
 const DeleteMaterial = ({ documentId }: IProps) => {
+  const [open, setOpen] = useState(false);
   const { id: courseId } = useParams();
   const { toast } = useToast();
 
@@ -60,8 +61,14 @@ const DeleteMaterial = ({ documentId }: IProps) => {
   };
 
   return (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>
+    <AlertDialog open={open} onOpenChange={setOpen}>
+      <AlertDialogTrigger
+        asChild
+        onClick={(e) => {
+          e.stopPropagation();
+          setOpen(true);
+        }}
+      >
         <Button variant="destructive" className="mr-2">
           <Trash className="h-4 w-4" />
         </Button>

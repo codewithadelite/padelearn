@@ -8,6 +8,9 @@ from padelearn.question.models import Question, QuestionAnswer
 
 class Quiz(BaseModel):
     title = models.CharField(max_length=200)
+    score = models.IntegerField(default=0)
+    total = models.IntegerField(default=0)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
 
     class Meta:
@@ -23,7 +26,9 @@ class QuizAnswer(BaseModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    answer = models.ForeignKey(QuestionAnswer, on_delete=models.CASCADE)
+    answer = models.ForeignKey(
+        QuestionAnswer, on_delete=models.CASCADE, null=True, blank=True
+    )
 
     class Meta:
         verbose_name = "Quiz Answer"

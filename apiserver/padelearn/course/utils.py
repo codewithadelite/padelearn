@@ -48,4 +48,4 @@ def save_questions_to_db(
                 )
             )
 
-    QuestionAnswer.objects.bulk_create(answers_bulk)
+    QuestionAnswer.objects.bulk_create(answers_bulk, batch_size=100)

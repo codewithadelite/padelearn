@@ -26,7 +26,7 @@ import { ISignInCredentials } from "@/models/authentication";
 
 import LoadingSpinner from "@/components/ui/loading-spinner";
 
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 

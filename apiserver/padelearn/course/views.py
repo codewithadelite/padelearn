@@ -11,7 +11,7 @@ from padelearn.core.permissions import (
     IsAdminOrReadOnly,
     IsResponsibleTrainer,
     IsStudentRegisteredInCourse,
-    IsAdmin
+    IsAdmin,
 )
 from padelearn.program.utils import get_program_by_id
 
@@ -22,7 +22,6 @@ from .serializers import CourseSerializer, MaterialSerializer
 from .utils import (
     get_course_by_id,
     get_course_materials,
-    get_course_by_program_id,
     get_material_by_id,
 )
 from .tasks import generate_quiz_from_document
@@ -112,7 +111,9 @@ class CourseMaterialDetailsAPIView(APIView):
         try:
             material = get_material_by_id(material_id)
             material.delete()
-            return Response({"detail": "Deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+            return Response(
+                {"detail": "Deleted successfully."}, status=status.HTTP_204_NO_CONTENT
+            )
         except Http404:
             return Response(
                 {"detail": "No material found for provided id."},

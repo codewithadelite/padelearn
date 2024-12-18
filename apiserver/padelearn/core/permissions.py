@@ -34,6 +34,15 @@ class IsAdmin(BasePermission):
         return bool(request.user.is_authenticated and request.user.is_admin)
 
 
+class IsStudent(BasePermission):
+    """
+    Allow access to students users only.
+    """
+
+    def has_permission(self, request, view):
+        return bool(request.user.is_authenticated and request.user.is_student)
+
+
 class IsResponsibleTrainer(BasePermission):
     """
     Allow access to trainers whose permission to manage course or program in which the course belongs to.

@@ -15,4 +15,4 @@ class StudentRegistered(BaseModel):
         db_table = "students_registered"
 
     def __str__(self):
-        return self.user
+        return str(self.user.username)

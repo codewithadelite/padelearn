@@ -1,6 +1,11 @@
 from django.urls import path, include
 from rest_framework import routers
-from .views import CourseAPIView, CourseMaterialsAPIView, CourseMaterialDocumentAPIView, CourseMaterialDetailsAPIView
+from .views import (
+    CourseAPIView,
+    CourseMaterialsAPIView,
+    CourseMaterialDocumentAPIView,
+    CourseMaterialDetailsAPIView,
+)
 
 
 router = routers.DefaultRouter()

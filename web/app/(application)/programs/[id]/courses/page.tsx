@@ -2,13 +2,8 @@
 
 import { useParams } from "next/navigation";
 
-import { AppSidebar } from "@/components/shared/navigation/app-sidebar";
 import { Separator } from "@/components/ui/separator";
-import {
-  SidebarInset,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@/components/ui/sidebar";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 
 import useSWR from "swr";
 import programService from "@/services/program.service";
@@ -33,34 +28,31 @@ export default function Programs() {
   );
 
   return (
-    <SidebarProvider>
-      <AppSidebar />
-      <SidebarInset>
-        <header className="flex h-16 border-b mb-4 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
-          <div className="flex items-center justify-between w-full gap-2 px-4">
-            <div className="flex items-center gap-2">
-              <SidebarTrigger className="-ml-1" />
-              <Separator orientation="vertical" className="mr-2 h-4" />
-              <h3 className="text-md font-bold">Courses</h3>
-            </div>
-            <AddCourseModal />
+    <>
+      <header className="flex h-16 border-b mb-4 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
+        <div className="flex items-center justify-between w-full gap-2 px-4">
+          <div className="flex items-center gap-2">
+            <SidebarTrigger className="-ml-1" />
+            <Separator orientation="vertical" className="mr-2 h-4" />
+            <h3 className="text-md font-bold">Courses</h3>
           </div>
-        </header>
-        <div className="w-full px-4 mb-4">
-          <div className="flex flex-row items-center">
-            <BackButton href="/programs" />
-            <Separator orientation="vertical" className="mx-2 h-4" />
-            {isProgramLoading ? (
-              <Skeleton className="h-4 w-[250px]" />
-            ) : (
-              <h4 className="text-2xl py-6 font-bold">{program?.name}</h4>
-            )}
-          </div>
+          <AddCourseModal />
         </div>
-        <div className="w-full px-4 sm:px-6 md:px-4 lg:px-20">
-          <CoursesList />
+      </header>
+      <div className="w-full px-4 mb-4">
+        <div className="flex flex-row items-center">
+          <BackButton href="/programs" />
+          <Separator orientation="vertical" className="mx-2 h-4" />
+          {isProgramLoading ? (
+            <Skeleton className="h-4 w-[250px]" />
+          ) : (
+            <h4 className="text-2xl py-6 font-bold">{program?.name}</h4>
+          )}
         </div>
-      </SidebarInset>
-    </SidebarProvider>
+      </div>
+      <div className="w-full px-4 sm:px-6 md:px-4 lg:px-20">
+        <CoursesList />
+      </div>
+    </>
   );
 }
