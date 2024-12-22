@@ -30,7 +30,7 @@ const QuizPage = () => {
 
   return (
     <>
-      <header className="flex h-16 border-b mb-4 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
+      <header className="flex bg-white dark:bg-slate-900 sticky top-0 h-16 border-b mb-4 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
         <div className="flex items-center justify-between w-full gap-2 px-4">
           <div className="flex items-center gap-2">
             <SidebarTrigger className="-ml-1" />
@@ -46,20 +46,22 @@ const QuizPage = () => {
             className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 border rounded-lg shadow-md hover:shadow-lg transition-shadow"
           >
             <CardHeader className="p-0 sm:w-1/3 flex items-start gap-2">
-              <CardTitle className="text-sm font-light">{quiz.title}</CardTitle>
+              <CardTitle className="text-sm font-normal">
+                {quiz.title}
+              </CardTitle>
             </CardHeader>
             <CardContent className="flex-1 flex flex-wrap items-center gap-4 p-0 sm:pl-4">
               <div className="ml-auto flex gap-4">
                 <div className="flex items-center gap-2 text-sm text-gray-700">
                   <ListChecks className="w-5 h-5 text-gray-500" />
                   <span className="font-semibold">Score:</span>{" "}
-                  <span className="font-extrabold">{quiz.score}</span>
+                  <span className="font-extrabold">
+                    {quiz.total === 0
+                      ? "Not taken"
+                      : ((quiz.score / quiz.total) * 100).toFixed(2) + "%"}
+                  </span>
                 </div>
-                <div className="flex items-center gap-2 text-sm text-gray-700">
-                  <ListChecks className="w-5 h-5 text-gray-500" />
-                  <span className="font-semibold">Total:</span>{" "}
-                  <span className="font-extrabold">{quiz.total}</span>
-                </div>
+
                 <div className="flex items-center gap-2 text-sm">
                   {quiz.result === "success" ? (
                     <>
@@ -73,7 +75,7 @@ const QuizPage = () => {
                     </>
                   )}
                 </div>
-                <QuizCorrection />
+                <QuizCorrection quizId={quiz.id} />
               </div>
             </CardContent>
           </Card>

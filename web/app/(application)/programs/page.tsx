@@ -14,7 +14,6 @@ export default function Programs() {
             <Separator orientation="vertical" className="mr-2 h-4" />
             <h3 className="text-md font-bold">Programs</h3>
           </div>
-          <AddProgramModal />
         </div>
       </header>
       <div className="w-full px-4 sm:px-6 md:px-4 lg:px-20 ">

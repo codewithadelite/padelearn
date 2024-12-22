@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import { useParams } from "next/navigation";
 import {
@@ -34,6 +34,8 @@ interface QuizData {
 const QuizPage = () => {
   const { id: courseId } = useParams();
 
+  const selectedAnswerRef = useRef<number | null>(null);
+
   const [questionsAnswers, setQuestionsAnswers] = useState<
     { question: number; answer: number }[]
   >([]);
@@ -65,10 +67,12 @@ const QuizPage = () => {
   };
 
   const handleAnswerSubmit = () => {
-    console.log(selectedAnswer);
+    console.log(selectedAnswerRef.current);
+    const answerToSubmit =
+      selectedAnswerRef.current !== null ? selectedAnswerRef.current : 0;
     const newData = [
       ...questionsAnswers,
-      { question: quizData.id, answer: selectedAnswer ? selectedAnswer : 0 },
+      { question: quizData.id, answer: answerToSubmit },
     ];
 
     if (quizData.currentQuestion >= quizData.totalQuestions) {
@@ -94,6 +98,10 @@ const QuizPage = () => {
     setSelectedAnswer(null);
     setProgress(0); // Reset progress bar
   };
+
+  useEffect(() => {
+    selectedAnswerRef.current = selectedAnswer;
+  }, [selectedAnswer]);
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -129,10 +137,16 @@ const QuizPage = () => {
         setProgress((prev) => {
           if (prev >= 100) {
             clearInterval(timer);
+            // Ensure submission happens with the current state of `selectedAnswer`
+            if (selectedAnswer === null) {
+              console.log("Timer ended with no answer selected.");
+            } else {
+              console.log("Timer ended with answer selected." + selectedAnswer);
+            }
             handleAnswerSubmit(); // Auto-submit when time ends
             return 0;
           }
-          return prev + 5; // Increase progress bar (100% / 20s = 5% per second)
+          return prev + 100 / 40;
         });
       }, 1000);
     }

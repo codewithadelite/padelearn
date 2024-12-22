@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import Cookies from "js-cookie";
 import {
   BadgeCheck,
   Bell,
@@ -26,6 +27,10 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 
+import { useRouter } from "next/navigation";
+import authenticationService from "@/services/authentication.service";
+
+import { redirect } from "next/navigation";
 export function NavUser({
   user,
 }: {
@@ -36,6 +41,16 @@ export function NavUser({
   };
 }) {
   const { isMobile } = useSidebar();
+
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    console.log("logout");
+    await authenticationService.signOut({
+      refresh_token: Cookies.get("refreshToken"),
+    });
+    redirect("/");
+  };
 
   return (
     <SidebarMenu>
@@ -98,12 +113,12 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <Link href="/">
+            <div onClick={() => handleLogout()}>
               <DropdownMenuItem>
                 <LogOut />
                 Log out
               </DropdownMenuItem>
-            </Link>
+            </div>
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>

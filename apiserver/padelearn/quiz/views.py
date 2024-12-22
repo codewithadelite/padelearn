@@ -85,9 +85,7 @@ class QuizAnswersAPIView(APIView):
 
                 if not question:
                     return Response(
-                        {
-                            "detail": f"Invalid question ID: {question_id}"
-                        },
+                        {"detail": f"Invalid question ID: {question_id}"},
                         status=status.HTTP_400_BAD_REQUEST,
                     )
 
@@ -122,6 +120,69 @@ class QuizAnswersAPIView(APIView):
                 },
                 status=status.HTTP_201_CREATED,
             )
+
+        except Exception as e:
+            print(e)
+            return Response(
+                {"detail": "An error occurred. Please try again."},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
+
+
+class QuizReviewAPIView(APIView):
+    """
+    Endpoint to retrieve quiz questions, answers, and the student's responses.
+    """
+
+    permission_classes = [IsStudent]
+
+    def get(self, request, id: int, *args, **kwargs):
+        try:
+            # Fetch the quiz by ID
+            quiz = get_object_or_404(Quiz, id=id, user=request.user)
+
+            # Get all questions related to the quiz
+            questions = Question.objects.filter(
+                id__in=QuizAnswer.objects.filter(quiz=quiz).values_list(
+                    "question__id", flat=True
+                )
+            )
+
+            # Prepare the response data
+            response_data = []
+
+            for question in questions:
+                # Get all possible answers for the question
+                possible_answers = QuestionAnswer.objects.filter(question=question)
+
+                # Get the student's response for this question
+                student_answer = QuizAnswer.objects.filter(
+                    quiz=quiz, question=question, user=request.user
+                ).first()
+
+                response_data.append(
+                    {
+                        "question": {
+                            "id": question.id,
+                            "text": question.question,
+                        },
+                        "answers": [
+                            {
+                                "id": answer.id,
+                                "text": answer.answer,
+                                "is_correct": answer.is_correct_answer,
+                                "is_the_answer": (
+                                    student_answer.answer.id == answer.id
+                                    if student_answer and student_answer.answer
+                                    else False
+                                ),
+                            }
+                            for answer in possible_answers
+                        ],
+                    }
+                )
+
+            return Response(response_data, status=status.HTTP_200_OK)
 
         except Exception as e:
             print(e)

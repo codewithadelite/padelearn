@@ -23,7 +23,7 @@ class AuthenticationService extends APIService {
       });
   }
 
-  async signOut(data: { refresh_token: string }) {
+  async signOut(data: { refresh_token: any }): Promise<any> {
     return this.post("sign-out/", data)
       .then((response) => {
         this.removeAccessToken();

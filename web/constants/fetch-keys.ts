@@ -8,3 +8,5 @@ export const MATERIALS_LIST = (courseId: string) =>
   `COURSES_MATERIALS/${courseId}`;
 
 export const QUIZES_LIST = `QUIZES_LIST`;
+
+export const QUIZ_REVIEW = (quizId: number) => `QUIZ_REVIEW/${quizId}`;

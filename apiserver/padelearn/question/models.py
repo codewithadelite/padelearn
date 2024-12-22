@@ -6,8 +6,8 @@ from padelearn.course.models import Course, Material
 
 class Question(BaseModel):
     question = models.CharField(max_length=255)
-    course = models.ForeignKey(Course, on_delete=models.CASCADE)
-    material = models.ForeignKey(Material, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.SET_NULL, null=True, blank=True)
+    material = models.ForeignKey(Material, on_delete=models.SET_NULL, null=True, blank=True)
 
     class Meta:
         verbose_name = "Question"
