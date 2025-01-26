@@ -11,5 +11,10 @@ class DocLoaderABC(ABC):
     @abstractmethod
     def load(self) -> str: ...
 
+
+class ChunkerABC(ABC):
+    @abstractmethod
+    def __init__(self, chunk_size: int, overlap: int): ...
+
     @abstractmethod
     def chunk_text(self, text: str) -> List[str]: ...
